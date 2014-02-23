@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 
 //*********Hello World
 
@@ -31,20 +33,44 @@
 
 // console.log(countNewLines());
 
-//*********MY FIRST I/O
+//*********MY FIRST ASYNC I/O!
 
 
-function countNewLines() {
-  var fs = require('fs');
-  var buf = fs.readFile(process.argv[2], 
-    function callback (err, data) { 
+// function countNewLines() {
+//   var fs = require('fs');
+//   var buf = fs.readFile(process.argv[2], 
+//     function callback (err, data) { 
+//     if (err == true) {
+//       console.log(err);
+//     } else {
+//       console.log(data.toString().split('\n').length-1);
+//     }
+//   });
+// }
+
+// countNewLines();
+
+
+// Create a program that prints a list of files in a given directory, filtered by the extension of the files. You will be provided a directory name as the first argument to your program (e.g. '/path/to/dir/') and a file extension to filter by as the second argument.
+
+// For example, if you get 'txt' as the second argument then you will need to filter the list to only files that end with .txt.
+
+// The list of files should be printed to the console, one file per line. You must use asynchronous I/O.
+
+var path = require('path');
+
+fs.readdir(process.argv[2], 
+  function callback (err, list) {
     if (err == true) {
       console.log(err);
     } else {
-      console.log(data.toString().split('\n').length-1);
+      for (i=0; i<list.length; i++) {
+        if (path.extname(list[i]) === '.' + process.argv[3]){
+        console.log(list[i]);
+        }
+      }
     }
-  });
-}
+}); 
 
-countNewLines();
+
 
