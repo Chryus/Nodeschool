@@ -1,21 +1,37 @@
 var fs = require('fs')
+var http = require('http')
 var path = require('path')
 var mymodule = require('./mymodule.js')
-var dir = process.argv[2];
-var ext = process.argv[3];
+
+// write program to perform http get request, print data
+
+var url = process.argv[2];
+
+http.get(url, function callback (res) {
+  res.setEncoding('utf8').on('data', function (data) {
+    console.log(data);
+  })
+})
+
+
 
 // use module to filter by extname'
-mymodule.filterByExt(dir, ext, logMatches);
 
-function logMatches(err, list) {
-  if (err) {
-    return console.error('There was an error:', err)
-  } else {
-    list.forEach(function (file) {
-      console.log(file)
-    })
-  }
-}
+// var dir = process.argv[2];
+// var ext = process.argv[3];
+
+
+// mymodule.filterByExt(dir, ext, logMatches);
+
+// function logMatches(err, list) {
+//   if (err) {
+//     return console.error('There was an error:', err)
+//   } else {
+//     list.forEach(function (file) {
+//       console.log(file)
+//     })
+//   }
+// }
 //console.log(filterByExt());
 
 //filter by extname
