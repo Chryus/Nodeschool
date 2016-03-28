@@ -2,16 +2,30 @@ var fs = require('fs')
 var http = require('http')
 var path = require('path')
 var mymodule = require('./mymodule.js')
+var bl = require('bl')
 
 // write program to perform http get request, print data
 
 var url = process.argv[2];
 
-http.get(url, function callback (res) {
-  res.setEncoding('utf8').on('data', function (data) {
-    console.log(data);
-  })
+http.get(process.argv[2], function(res) {
+  res.pipe(bl(function(err, data) {
+    if (err) {
+      return console.error(err)
+    } else {
+      data = data.toString()
+      console.log(data.length)
+      console.log(data)
+    }
+  }))
 })
+
+
+// http.get(url, function callback (res) {
+//   res.setEncoding('utf8').on('data', function (data) {
+//     console.log(data);
+//   })
+// })
 
 
 
