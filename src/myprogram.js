@@ -4,21 +4,55 @@ var path = require('path')
 var mymodule = require('./mymodule.js')
 var bl = require('bl')
 
-// write program to perform http get request, print data
 
-var url = process.argv[2];
-
+// write a program to print out data from three seperate URLs in the order of the URLs
 http.get(process.argv[2], function(res) {
   res.pipe(bl(function(err, data) {
     if (err) {
       return console.error(err)
     } else {
       data = data.toString()
-      console.log(data.length)
       console.log(data)
+      http.get(process.argv[3], function(res) {
+        res.pipe(bl(function(err, data) {
+          if (err) {
+            return console.error(err)
+          } else {
+            data = data.toString()
+            console.log(data)
+            http.get(process.argv[4], function(res) {
+              res.pipe(bl(function(err, data) {
+                if (err) {
+                  return console.error(err)
+                } else {
+                  data = data.toString()
+                  console.log(data)
+                }
+              }))
+            })
+          }
+        }))
+      })
     }
   }))
 })
+
+
+// write program to perform http get request, print data
+
+// var url = process.argv[2];
+
+// http.get(process.argv[2], function(res) {
+//   res.pipe(bl(function(err, data) {
+//     if (err) {
+//       return console.error(err)
+//     } else {
+//       data = data.toString()
+//       console.log(data.length)
+//       console.log(data)
+//     }
+//   }))
+// })
 
 
 // http.get(url, function callback (res) {
