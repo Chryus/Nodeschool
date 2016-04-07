@@ -6,37 +6,63 @@ var bl = require('bl')
 
 
 // write a program to print out data from three seperate URLs in the order of the URLs
-http.get(process.argv[2], function(res) {
-  res.pipe(bl(function(err, data) {
-    if (err) {
-      return console.error(err)
-    } else {
-      data = data.toString()
-      console.log(data)
-      http.get(process.argv[3], function(res) {
-        res.pipe(bl(function(err, data) {
-          if (err) {
-            return console.error(err)
-          } else {
-            data = data.toString()
-            console.log(data)
-            http.get(process.argv[4], function(res) {
-              res.pipe(bl(function(err, data) {
-                if (err) {
-                  return console.error(err)
-                } else {
-                  data = data.toString()
-                  console.log(data)
-                }
-              }))
-            })
-          }
-        }))
-      })
-    }
-  }))
-})
+var results = []
+var count = 0
 
+function logResults() {
+  for (var i = 0; i < 3; i++)
+    console.log(results[i])
+}
+
+function httpGet(index) {
+  http.get(process.argv[index + 2], function(res) {
+    res.pipe(bl(function(err, data) {
+      if (err) {
+        return console.error(err)
+      } else {
+        results[index] = data.toString()
+        count ++
+
+        if (count == 3)
+          logResults()
+      }
+    }))
+  })
+}
+
+for (var i = 0; i < 3; i++)
+  httpGet(i)
+
+// http.get(process.argv[2], function(res) {
+//   res.pipe(bl(function(err, data) {
+//     if (err) {
+//       return console.error(err)
+//     } else {
+//       data = data.toString()
+//       console.log(data)
+//       http.get(process.argv[3], function(res) {
+//         res.pipe(bl(function(err, data) {
+//           if (err) {
+//             return console.error(err)
+//           } else {
+//             data = data.toString()
+//             console.log(data)
+//             http.get(process.argv[4], function(res) {
+//               res.pipe(bl(function(err, data) {
+//                 if (err) {
+//                   return console.error(err)
+//                 } else {
+//                   data = data.toString()
+//                   console.log(data)
+//                 }
+//               }))
+//             })
+//           }
+//         }))
+//       })
+//     }
+//   }))
+// })
 
 // write program to perform http get request, print data
 
